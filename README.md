@@ -14,50 +14,45 @@ To write a python program for creating Echo Client and Echo Server using TCP Soc
 ## Server
 ```
 import socket
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host = '127.0.0.1'
-port = 5000
-server_socket.bind((host, port))
-server_socket.listen(1)
-
-print("Echo Server is waiting for connection...")
-client_socket, addr = server_socket.accept()
-print("Connected to:", addr)
+s = socket.socket()
+s.bind(('localhost', 8000))
+s.listen(5)
+print("Echo Server waiting for client...")
+c, addr = s.accept()
+print("Client connected:", addr)
 while True:
-    data = client_socket.recv(1024).decode()
+    data = c.recv(1024).decode()
     if not data:
         break
-    print("Client:", data)
-    client_socket.send(data.encode())
-client_socket.close()
-server_socket.close()
+    print("Received from client:", data)
+    c.send(data.encode())
+c.close()
+s.close()
 ```
 ## Client
 ```
 import socket
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host = '127.0.0.1'
-port = 5000
-client_socket.connect((host, port))
+s = socket.socket()
+s.connect(('localhost', 8000))
+print("Connected to Echo Server")
 while True:
-    message = input("Enter message: ")
-    if message.lower() == 'exit':
+    msg = input("Enter a message: ")
+    if msg.lower() == "exit":
         break
-    client_socket.send(message.encode())
-    data = client_socket.recv(1024).decode()
-    print("Server echoed:", data)
-client_socket.close()
+    s.send(msg.encode())
+    data = s.recv(1024).decode()
+    print("Echo from server:", data)
+s.close()
 ```
-
 ## OUPUT
 
 ## Server
 
-<img width="1121" height="366" alt="image" src="https://github.com/user-attachments/assets/0a257f12-c7d3-4507-b05e-6c59eebd832e" />
+<img width="668" height="198" alt="image" src="https://github.com/user-attachments/assets/6abbce18-db80-4590-ad45-f5105749718c" />
 
 ## Client
 
-<img width="1118" height="342" alt="image" src="https://github.com/user-attachments/assets/34e0f2e3-2853-4d95-b47f-a28eb1fc38d5" />
+<img width="789" height="231" alt="image" src="https://github.com/user-attachments/assets/f327f6f3-5951-4626-b468-b0dd1c0672a0" />
 
 ## RESULT
 
